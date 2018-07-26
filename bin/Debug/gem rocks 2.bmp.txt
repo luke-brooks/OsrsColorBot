@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-16"?>
+<ArrayOfOsrsColor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff7c0d7b</ColorName>
+    <A>255</A>
+    <R>124</R>
+    <G>13</G>
+    <B>123</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff870d85</ColorName>
+    <A>255</A>
+    <R>135</R>
+    <G>13</G>
+    <B>133</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff911190</ColorName>
+    <A>255</A>
+    <R>145</R>
+    <G>17</G>
+    <B>144</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff981196</ColorName>
+    <A>255</A>
+    <R>152</R>
+    <G>17</G>
+    <B>150</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff9f119d</ColorName>
+    <A>255</A>
+    <R>159</R>
+    <G>17</G>
+    <B>157</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ffa515a4</ColorName>
+    <A>255</A>
+    <R>165</R>
+    <G>21</G>
+    <B>164</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ffa211a0</ColorName>
+    <A>255</A>
+    <R>162</R>
+    <G>17</G>
+    <B>160</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff840d82</ColorName>
+    <A>255</A>
+    <R>132</R>
+    <G>13</G>
+    <B>130</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff8b1189</ColorName>
+    <A>255</A>
+    <R>139</R>
+    <G>17</G>
+    <B>137</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff9b119a</ColorName>
+    <A>255</A>
+    <R>155</R>
+    <G>17</G>
+    <B>154</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff800d7f</ColorName>
+    <A>255</A>
+    <R>128</R>
+    <G>13</G>
+    <B>127</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff8e118d</ColorName>
+    <A>255</A>
+    <R>142</R>
+    <G>17</G>
+    <B>141</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff951194</ColorName>
+    <A>255</A>
+    <R>149</R>
+    <G>17</G>
+    <B>148</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff740d73</ColorName>
+    <A>255</A>
+    <R>116</R>
+    <G>13</G>
+    <B>115</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff700d6f</ColorName>
+    <A>255</A>
+    <R>112</R>
+    <G>13</G>
+    <B>111</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff780d77</ColorName>
+    <A>255</A>
+    <R>120</R>
+    <G>13</G>
+    <B>119</B>
+  </OsrsColor>
+  <OsrsColor>
+    <ImageName>gem rocks 2.bmp</ImageName>
+    <ColorName>ff510951</ColorName>
+    <A>255</A>
+    <R>81</R>
+    <G>9</G>
+    <B>81</B>
+  </OsrsColor>
+</ArrayOfOsrsColor>

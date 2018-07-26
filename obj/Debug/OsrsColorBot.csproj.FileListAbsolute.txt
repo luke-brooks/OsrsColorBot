@@ -1,0 +1,8 @@
+C:\Users\Luke\Documents\Visual Studio 2017\Projects\OsrsColorBot\OsrsColorBot\bin\Debug\WindowScrape.dll
+C:\Users\Luke\Documents\Visual Studio 2017\Projects\OsrsColorBot\OsrsColorBot\bin\Debug\WindowScrape.pdb
+C:\Users\Luke\Documents\Visual Studio 2017\Projects\OsrsColorBot\OsrsColorBot\bin\Debug\OsrsColorBot.exe.config
+C:\Users\Luke\Documents\Visual Studio 2017\Projects\OsrsColorBot\OsrsColorBot\bin\Debug\OsrsColorBot.exe
+C:\Users\Luke\Documents\Visual Studio 2017\Projects\OsrsColorBot\OsrsColorBot\bin\Debug\OsrsColorBot.pdb
+C:\Users\Luke\Documents\Visual Studio 2017\Projects\OsrsColorBot\OsrsColorBot\obj\Debug\OsrsColorBot.exe
+C:\Users\Luke\Documents\Visual Studio 2017\Projects\OsrsColorBot\OsrsColorBot\obj\Debug\OsrsColorBot.pdb
+C:\Users\Luke\Documents\Visual Studio 2017\Projects\OsrsColorBot\OsrsColorBot\obj\Debug\OsrsColorBot.csprojResolveAssemblyReference.cache
