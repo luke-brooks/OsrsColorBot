@@ -53,7 +53,7 @@ namespace OsrsColorBot
             return response;
         }
 
-        public OsrsScanData SearchScreenForColors(List<OsrsColor> colors, OsrsImage image, ScanBoundaries boundaries = null)
+        public OsrsScanData SearchScreenForColors(List<Color> colors, OsrsImage image, ScanBoundaries boundaries = null)
         {
             OsrsScanData response = null;
             var osrsWindow = HwndInterface.GetHwndFromTitle("Old School RuneScape");
@@ -77,13 +77,14 @@ namespace OsrsColorBot
             #endregion
 
             response = FindColorsInImage(colors, screenshot, boundaries);
-            response = FindColorsInImage(colors, image.ImageBitmap, new ScanBoundaries { MinX = 0, MinY = 0, MaxX = image.ImageBitmap.Width, MaxY = image.ImageBitmap.Height });
+            //response = FindColorsInImage(colors, image.ImageBitmap, new ScanBoundaries { MinX = 0, MinY = 0, MaxX = image.ImageBitmap.Width, MaxY = image.ImageBitmap.Height });
 
             return response;
         }
 
-        public List<OsrsColor> SaveColorData(OsrsImage osrsImage)
+        public List<Color> SaveColorData(OsrsImage osrsImage)
         {
+            var result = new List<Color>();
             var colorList = new List<OsrsColor>();
 
             // The X and Y on the inner loops represent the coordinates on the bitmap that we are trying to find in the Screenshot
@@ -92,6 +93,8 @@ namespace OsrsColorBot
                 for (int innerY = 0; innerY < osrsImage.ImageBitmap.Height; innerY++)
                 {
                     var imgColor = osrsImage.ImageBitmap.GetPixel(innerX, innerY);
+
+                    result.Add(imgColor);
 
                     var cData = new OsrsColor()
                     {
@@ -117,7 +120,7 @@ namespace OsrsColorBot
 
             LoggingUtility.WriteToColorLog(colorList, osrsImage.ImageName);
 
-            return colorList;
+            return result;
         }
 
         public List<OsrsImage> LoadBitmapResources(string imgLocation)
@@ -201,7 +204,7 @@ namespace OsrsColorBot
         }
 
         // tis doesnt fucking work right now
-        private OsrsScanData FindColorsInImage(List<OsrsColor> colors, Bitmap haystack, ScanBoundaries boundaries)
+        private OsrsScanData FindColorsInImage(List<Color> colors, Bitmap haystack, ScanBoundaries boundaries)
         {
             var result = new OsrsScanData();
 
@@ -214,19 +217,21 @@ namespace OsrsColorBot
                     {
                         Color cHaystack = haystack.GetPixel(outerX, outerY);
 
-                        // We compare the color of the pixel in the Screenshot with the Color we are searching for
-                        if (c.R != cHaystack.R || c.G != cHaystack.G || c.B != cHaystack.B)
+                        if (result.MatchLocations.Count > 5)
                         {
-                            // Stop examining the current bitmap once a single pixel doesn't match
-                            goto notFound;
+                            goto breakLoop;
+                        }
+
+                        // We compare the color of the pixel in the Screenshot with the Color we are searching for
+                        if (c.R == cHaystack.R || c.G == cHaystack.G || c.B == cHaystack.B)
+                        {
+                            result.MatchLocations.Add(new Point(outerX, outerY));
                         }
                     }
-
-                    result.MatchLocations.Add(new Point(outerX, outerY));
-
-                    notFound:
-                    continue;
                 }
+
+                breakLoop:
+                break;
             }
 
             return result;

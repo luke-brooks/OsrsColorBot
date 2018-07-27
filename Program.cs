@@ -28,23 +28,31 @@ namespace OsrsColorBot
 
             var packContentsLocation = imageProcessor.SearchScreenForImage(packContents, getSingleOccurrence: true).MatchLocations.FirstOrDefault();
 
-            var blah = imageProcessor.SearchScreenForColors(gemRocksColors, gemRocks.FirstOrDefault());
+            //var blah = imageProcessor.SearchScreenForColors(gemRocksColors, gemRocks.FirstOrDefault());
+
+            //if (blah.MatchLocations.Any())
+            //{
+            //    IoSimulator.ClickLocation(blah.MatchLocations.First(), false);
+            //    //IoSimulator.PauseThread(1300);
+            //    //IoSimulator.ClickLocation(blah.MatchLocations.First());
+
+            //}
 
             var numOfIterations = 10;
             for (int i = 0; i < numOfIterations * 4; i++)
             {
                 for (int j = 0; j < numOfIterations; j++)
                 {
-                    MineRocks(imageProcessor, ironRocks1);
+                    MineRocks(imageProcessor, gemRocks.First());
 
                     IoSimulator.PauseThread(3000);
 
-                    MineRocks(imageProcessor, ironRocks2);
+                    MineRocks(imageProcessor, gemRocks.Last());
 
                     IoSimulator.PauseThread(3000);
                 }
 
-                DropIronOres(imageProcessor, ironOre, drop, packContentsLocation); 
+                DropIronOres(imageProcessor, ironOre, drop, packContentsLocation);
             }
         }
 
