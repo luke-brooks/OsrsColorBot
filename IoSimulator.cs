@@ -11,10 +11,10 @@ namespace OsrsColorBot
 {
     public static class IoSimulator
     {
-        public static void PauseThread(int milliseconds)
+        public static void PauseThread(int milliseconds, double fraction = .25)
         {
-            int fraction = Convert.ToInt32(milliseconds * .25);
-            Thread.Sleep(new Random().Next(milliseconds - fraction, milliseconds + fraction));
+            int buffer = Convert.ToInt32(milliseconds * fraction);
+            Thread.Sleep(new Random().Next(milliseconds - buffer, milliseconds + buffer));
         }
 
         public static bool CheckUserIdleStatus()
