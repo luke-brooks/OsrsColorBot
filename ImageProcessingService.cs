@@ -53,7 +53,7 @@ namespace OsrsColorBot
             return response;
         }
 
-        public List<OsrsScanData> SearchScreenForImages(List<OsrsImage> osrsImages, ScanBoundaries boundaries = null)
+        public List<OsrsScanData> SearchScreenForImages(List<OsrsImage> osrsImages, ScanBoundaries boundaries = null, bool getSingleOccurrence = false)
         {
             var response = new List<OsrsScanData>();
             var osrsWindow = HwndInterface.GetHwndFromTitle("Old School RuneScape");
@@ -79,7 +79,7 @@ namespace OsrsColorBot
             }
             #endregion
 
-            response = FindAllBitmapsInImage(osrsImages, screenshot, boundaries, false);
+            response = FindAllBitmapsInImage(osrsImages, screenshot, boundaries, getSingleOccurrence);
 
             return response;
         }
@@ -278,6 +278,11 @@ namespace OsrsColorBot
                         {
                             temp.MatchLocations.Add(foundPoint);
                             result.Add(temp);
+                        }
+
+                        if (getSingleOccurrence)
+                        {
+                            return result;
                         }
 
                         notFound:

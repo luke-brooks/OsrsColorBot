@@ -13,60 +13,66 @@ namespace OsrsColorBot
         //[STAThread]
         static void Main(string[] args)
         {
-            var imageProcessor = new ImageProcessingService();
-            var imgs = imageProcessor.LoadBitmapResources(@"C:\Users\Luke\Documents\OsrsColorBot Resources");
+            var engine = new ActionEngine(@"C:\Users\Luke\Documents\OsrsColorBot Resources");
 
-            #region Power Mining items
-            var ironOre = imgs.Where(x => x.ImageName == "iron ore.bmp").FirstOrDefault();
-            var drop = imgs.Where(x => x.ImageName == "drop.bmp").FirstOrDefault();
-            var ironRocks1 = imgs.Where(x => x.ImageName == "iron rocks 1.bmp").FirstOrDefault();
-            var ironRocks2 = imgs.Where(x => x.ImageName == "iron rocks 2.bmp").FirstOrDefault();
-            var packContents = imgs.Where(x => x.ImageName == "view pack contents.bmp").FirstOrDefault();
-            var opal = imgs.Where(x => x.ImageName.Contains("opal")).FirstOrDefault();
-            #endregion
+            // tool
+            var chisel = engine.AllImages.Where(x => x.ImageName == "chisel.bmp").FirstOrDefault();
 
-            var gemRocks = imgs.Where(x => x.ImageName.Contains("gem rocks")).ToList();
+            // resources
+            var uncuts = engine.AllImages.Where(x => x.ImageName.Contains("uncut")).ToList();
+            var cuts = engine.AllImages.Where(x => x.ImageName == "cut jade.bmp" || 
+                                                    x.ImageName == "cut opal.bmp" || 
+                                                    x.ImageName == "cut topaz.bmp").ToList();
+            var itemsToDrop = engine.AllImages.Where(x => x.ImageName == "crushed gem.bmp").ToList();
 
-            var itemsToDrop = imgs.Where(x => x.ImageName == "crushed gem.bmp" || x.ImageName == "cut opal.bmp").ToList();
-            var chisel = imgs.Where(x => x.ImageName == "chisel.bmp").FirstOrDefault();
-            var uncuts = imgs.Where(x => x.ImageName.Contains("uncut")).ToList();
-            var cutAllJade = imgs.Where(x => x.ImageName == "cut all jade.bmp").FirstOrDefault();
+            var drop = engine.AllImages.Where(x => x.ImageName == "drop.bmp").FirstOrDefault();
 
-            var uncutJade = uncuts.Where(x => x.ImageName.Contains("jade")).FirstOrDefault();
+            engine.UseToolOnResources(uncuts, chisel);
 
-            var gemRocksColors = gemRocks.SelectMany(x => imageProcessor.SaveColorData(x)).ToList();
+            IoSimulator.PauseThread(1000);
 
-            var packContentsLocation = imageProcessor.SearchScreenForImage(packContents, getSingleOccurrence: true).MatchLocations.FirstOrDefault();
-            #region Color detect attempt
-            //var blah = imageProcessor.SearchScreenForColors(gemRocksColors, gemRocks.FirstOrDefault());
+            engine.UseToolOnResources(cuts, chisel, 3000);
 
-            //if (blah.MatchLocations.Any())
-            //{
-            //    int myNum = blah.MatchLocations.Count % 2;
-            //    IoSimulator.ClickLocation(blah.MatchLocations.ToArray()[myNum], false);
-            //    //IoSimulator.PauseThread(1300);
-            //    //IoSimulator.ClickLocation(blah.MatchLocations.First());
+            engine.DropAllItems(itemsToDrop, drop);
 
-            //}
-            #endregion
+            //var imageProcessor = new ImageProcessingService();
+            //var imgs = imageProcessor.LoadBitmapResources(@"C:\Users\Luke\Documents\OsrsColorBot Resources");
 
-            var chiselLocation = imageProcessor.SearchScreenForImage(chisel, getSingleOccurrence: true).MatchLocations.FirstOrDefault();
-            var uncutLocation = imageProcessor.SearchScreenForImage(uncutJade, getSingleOccurrence: true).MatchLocations.FirstOrDefault();
+            //#region Power Mining items
+            //var ironOre = imgs.Where(x => x.ImageName == "iron ore.bmp").FirstOrDefault();
+            //var drop = imgs.Where(x => x.ImageName == "drop.bmp").FirstOrDefault();
+            //var ironRocks1 = imgs.Where(x => x.ImageName == "iron rocks 1.bmp").FirstOrDefault();
+            //var ironRocks2 = imgs.Where(x => x.ImageName == "iron rocks 2.bmp").FirstOrDefault();
+            //var packContents = imgs.Where(x => x.ImageName == "view pack contents.bmp").FirstOrDefault();
+            //var opal = imgs.Where(x => x.ImageName.Contains("opal")).FirstOrDefault();
+            //#endregion
 
-            IoSimulator.ClickLocation(chiselLocation);
+            //var gemRocks = imgs.Where(x => x.ImageName.Contains("gem rocks")).ToList();
 
-            IoSimulator.PauseThread(2000);
+            //var itemsToDrop = imgs.Where(x => x.ImageName == "crushed gem.bmp" || x.ImageName == "cut opal.bmp").ToList();
+            //var chisel = imgs.Where(x => x.ImageName == "chisel.bmp").FirstOrDefault();
+            //var uncuts = imgs.Where(x => x.ImageName.Contains("uncut")).ToList();
+            //var cutAllJade = imgs.Where(x => x.ImageName == "cut all jade.bmp").FirstOrDefault();
 
-            IoSimulator.ClickLocation(uncutLocation);
+            //var uncutJade = uncuts.Where(x => x.ImageName.Contains("jade")).FirstOrDefault();
 
-            IoSimulator.PauseThread(1500);
+            //var gemRocksColors = gemRocks.SelectMany(x => imageProcessor.SaveColorData(x)).ToList();
 
-            var cutAllJadeLocation = imageProcessor.SearchScreenForImage(cutAllJade, getSingleOccurrence: true).MatchLocations.FirstOrDefault();
+            //var packContentsLocation = imageProcessor.SearchScreenForImage(packContents, getSingleOccurrence: true).MatchLocations.FirstOrDefault();
+            //#region Color detect attempt
+            ////var blah = imageProcessor.SearchScreenForColors(gemRocksColors, gemRocks.FirstOrDefault());
 
+            ////if (blah.MatchLocations.Any())
+            ////{
+            ////    int myNum = blah.MatchLocations.Count % 2;
+            ////    IoSimulator.ClickLocation(blah.MatchLocations.ToArray()[myNum], false);
+            ////    //IoSimulator.PauseThread(1300);
+            ////    //IoSimulator.ClickLocation(blah.MatchLocations.First());
 
-            IoSimulator.ClickLocation(cutAllJadeLocation);
+            ////}
+            //#endregion
+            
 
-            IoSimulator.PauseThread(2000);
             //DropAllItems(imageProcessor, itemsToDrop, drop, packContentsLocation);
 
             // DropAllOfItemFromInventory(imageProcessor, opal, drop, packContentsLocation);

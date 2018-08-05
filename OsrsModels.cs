@@ -17,6 +17,14 @@ namespace OsrsColorBot
         }
     }
 
+    public class UiImageData
+    {
+        public OsrsScanData PackContents { get; set; }
+        public OsrsScanData Inventory { get; set; }
+        public OsrsScanData FirstItemInInventory { get; set; }
+        public Point PerformActionOnAll { get; set; }
+    }
+
     public class OsrsColor
     {
         public string ImageName { get; set; }

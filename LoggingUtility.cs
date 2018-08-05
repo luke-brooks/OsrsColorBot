@@ -38,11 +38,11 @@ namespace OsrsColorBot
 
         public static void SaveScreenshot(Bitmap screenshot)
         {
-            using (var fileStream = new FileStream(String.Format("{0}\\{1}.bmp", CurrentWorkingDirectory, "screenshot"), FileMode.Create))
-            using (var fileWriter = new StreamWriter(fileStream))
-            {
-                screenshot.Save(fileStream, ImageFormat.Bmp);
-            }
+            //using (var fileStream = new FileStream(String.Format("{0}\\{1}.bmp", CurrentWorkingDirectory, "screenshot"), FileMode.Create))
+            //using (var fileWriter = new StreamWriter(fileStream))
+            //{
+            //    screenshot.Save(fileStream, ImageFormat.Bmp);
+            //}
         }
 
         private static string ToXML(List<OsrsColor> colorList)
