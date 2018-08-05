@@ -53,8 +53,40 @@ namespace OsrsColorBot
             return response;
         }
 
+        public List<OsrsScanData> SearchScreenForImages(List<OsrsImage> osrsImages, ScanBoundaries boundaries = null)
+        {
+            var response = new List<OsrsScanData>();
+            var osrsWindow = HwndInterface.GetHwndFromTitle("Old School RuneScape");
+            var windowSize = HwndInterface.GetHwndSize(osrsWindow);
+            var windowLocation = HwndInterface.GetHwndPos(osrsWindow);
+
+            HwndInterface.ActivateWindow(osrsWindow);
+
+            var screenshot = TakeScreenshot();
+
+            #region Scan Boundaries Calculation
+            if (boundaries == null)
+            {
+                boundaries = new ScanBoundaries();
+
+                var imgMaxX = osrsImages.Max(x => x.ImageBitmap.Width);
+                var imgMaxY = osrsImages.Max(x => x.ImageBitmap.Height);
+
+                boundaries.MinX = windowLocation.X < 0 ? 0 : windowLocation.X;
+                boundaries.MinY = windowLocation.Y < 0 ? 0 : windowLocation.Y;
+                boundaries.MaxX = (windowLocation.X + windowSize.Width) > screenshot.Width ? screenshot.Width - imgMaxX : (windowLocation.X + windowSize.Width) - imgMaxX;
+                boundaries.MaxY = (windowLocation.Y + windowSize.Height) > screenshot.Height ? screenshot.Height - imgMaxY : (windowLocation.Y + windowSize.Height) - imgMaxY;
+            }
+            #endregion
+
+            response = FindAllBitmapsInImage(osrsImages, screenshot, boundaries, false);
+
+            return response;
+        }
+
         public OsrsScanData SearchScreenForColors(List<Color> colors, OsrsImage image, ScanBoundaries boundaries = null)
         {
+            LoggingUtility.WriteToAuditLog("Starting Color Search");
             OsrsScanData response = null;
             var osrsWindow = HwndInterface.GetHwndFromTitle("Old School RuneScape");
             var windowSize = HwndInterface.GetHwndSize(osrsWindow);
@@ -79,6 +111,7 @@ namespace OsrsColorBot
             response = FindColorsInImage(colors, screenshot, boundaries);
             //response = FindColorsInImage(colors, image.ImageBitmap, new ScanBoundaries { MinX = 0, MinY = 0, MaxX = image.ImageBitmap.Width, MaxY = image.ImageBitmap.Height });
 
+            LoggingUtility.WriteToAuditLog("Color Search Complete");
             return response;
         }
 
@@ -164,7 +197,7 @@ namespace OsrsColorBot
         // this should be able to scan for a list of OsrsImages to find multiple items on one scan
         private OsrsScanData FindBitmapsInImage(OsrsImage needle, Bitmap haystack, ScanBoundaries boundaries, bool getSingleOccurrence)
         {
-            var result = new OsrsScanData() { ImageName = needle.ImageName };
+            var result = new OsrsScanData() { ImageData = needle };
 
             // The X and Y of the outer loops represent the coordinates on the Screenshot object
             for (int outerX = boundaries.MinX; outerX < boundaries.MaxX; outerX++)
@@ -203,9 +236,63 @@ namespace OsrsColorBot
             return result;
         }
 
+        // this should be able to scan for a list of OsrsImages to find multiple items on one scan
+        private List<OsrsScanData> FindAllBitmapsInImage(List<OsrsImage> needles, Bitmap haystack, ScanBoundaries boundaries, bool getSingleOccurrence)
+        {
+            var result = new List<OsrsScanData>();
+
+            // The X and Y of the outer loops represent the coordinates on the Screenshot object
+            for (int outerX = boundaries.MinX; outerX < boundaries.MaxX; outerX++)
+            {
+                for (int outerY = boundaries.MinY; outerY < boundaries.MaxY; outerY++)
+                {
+                    foreach (var n in needles)
+                    {
+                        var temp = new OsrsScanData() { ImageData = n };
+
+                        // The X and Y on the inner loops represent the coordinates on the bitmap that we are trying to find in the Screenshot
+                        for (int innerX = 0; innerX < n.ImageBitmap.Width; innerX++)
+                        {
+                            for (int innerY = 0; innerY < n.ImageBitmap.Height; innerY++)
+                            {
+                                Color cNeedle = n.ImageBitmap.GetPixel(innerX, innerY);
+                                Color cHaystack = haystack.GetPixel(innerX + outerX, innerY + outerY);
+
+                                // We compare the color of the pixel in the Screenshot with the pixel in the bitmap we are searching for
+                                if (cNeedle.R != cHaystack.R || cNeedle.G != cHaystack.G || cNeedle.B != cHaystack.B)
+                                {
+                                    // Stop examining the current bitmap once a single pixel doesn't match
+                                    goto notFound;
+                                }
+                            }
+                        }
+
+                        var foundPoint = new Point(outerX, outerY);
+                        var existingEntry = result.Where(x => x.ImageData.ImageName == temp.ImageData.ImageName).FirstOrDefault();
+
+                        if (existingEntry != null)
+                        {
+                            existingEntry.MatchLocations.Add(foundPoint);
+                        }
+                        else
+                        {
+                            temp.MatchLocations.Add(foundPoint);
+                            result.Add(temp);
+                        }
+
+                        notFound:
+                        continue;
+                    }
+                }
+            }
+
+            return result;
+        }
+
         // tis doesnt fucking work right now
         private OsrsScanData FindColorsInImage(List<Color> colors, Bitmap haystack, ScanBoundaries boundaries)
         {
+            LoggingUtility.WriteToAuditLog("Beginning Screenshot Examination for Colors");
             var result = new OsrsScanData();
 
             // The X and Y of the outer loops represent the coordinates on the Screenshot object
@@ -217,21 +304,23 @@ namespace OsrsColorBot
                     {
                         Color cHaystack = haystack.GetPixel(outerX, outerY);
 
-                        if (result.MatchLocations.Count > 5)
+                        if (result.MatchLocations.Count > 20)
                         {
-                            goto breakLoop;
+                            return result;
                         }
 
                         // We compare the color of the pixel in the Screenshot with the Color we are searching for
                         if (c.R == cHaystack.R || c.G == cHaystack.G || c.B == cHaystack.B)
                         {
-                            result.MatchLocations.Add(new Point(outerX, outerY));
+                            LoggingUtility.WriteToAuditLog(String.Format("Color Found: X = {0}  Y = {1}", outerX, outerY));
+
+                            if (!result.MatchLocations.Where(x => x.X == outerX && x.Y == outerY).Any())
+                            {
+                                result.MatchLocations.Add(new Point(outerX, outerY));
+                            }
                         }
                     }
                 }
-
-                breakLoop:
-                break;
             }
 
             return result;

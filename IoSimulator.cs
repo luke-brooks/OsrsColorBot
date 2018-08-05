@@ -13,7 +13,7 @@ namespace OsrsColorBot
     {
         public static void PauseThread(int milliseconds)
         {
-            int fraction = Convert.ToInt32(milliseconds * .25);
+            int fraction = Convert.ToInt32(milliseconds * .15);
             Thread.Sleep(new Random().Next(milliseconds - fraction, milliseconds + fraction));
         }
 

@@ -22,14 +22,14 @@ namespace OsrsColorBot.LowLevelIO
         public static void MouseLeftClick()
         {
             mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
-            Thread.Sleep(new Random().Next(20, 30));
+            IoSimulator.PauseThread(30);
             mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
         }
 
         public static void MouseRightClick()
         {
             mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
-            Thread.Sleep(new Random().Next(20, 30));
+            IoSimulator.PauseThread(30);
             mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
         }
     }

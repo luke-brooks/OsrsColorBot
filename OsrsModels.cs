@@ -29,7 +29,7 @@ namespace OsrsColorBot
 
     public class OsrsScanData
     {
-        public string ImageName { get; set; }
+        public OsrsImage ImageData { get; set; }
         public List<Point> MatchLocations { get; set; }
 
         public OsrsScanData()
