@@ -19,10 +19,22 @@ namespace OsrsColorBot
 
     public class UiImageData
     {
+        public OsrsScanData GameFieldView { get; set; }
         public OsrsScanData PackContents { get; set; }
         public OsrsScanData Inventory { get; set; }
         public OsrsScanData FirstItemInInventory { get; set; }
         public Point PerformActionOnAll { get; set; }
+        public RightClickMenuOptions RightClickMenu { get; set; }
+
+        public UiImageData()
+        {
+            RightClickMenu = new RightClickMenuOptions();
+        }
+    }
+
+    public class RightClickMenuOptions
+    {
+        public OsrsImage Drop { get; set; }
     }
 
     public class OsrsColor
@@ -52,5 +64,26 @@ namespace OsrsColorBot
         public int MinY { get; set; }
         public int MaxX { get; set; }
         public int MaxY { get; set; }
+    }
+
+    public static class CustomExtensions
+    {
+        public static List<OsrsImage> ToList(this OsrsImage img)
+        {
+            var result = new List<OsrsImage>();
+
+            result.Add(img);
+
+            return result;
+        }
+
+        public static List<OsrsScanData> ToList(this OsrsScanData scanData)
+        {
+            var result = new List<OsrsScanData>();
+
+            result.Add(scanData);
+
+            return result;
+        }
     }
 }

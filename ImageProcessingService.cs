@@ -24,35 +24,7 @@ namespace OsrsColorBot
         }
 
         #region Public Methods
-
-        public OsrsScanData SearchScreenForImage(OsrsImage osrsImage, ScanBoundaries boundaries = null, bool getSingleOccurrence = false)
-        {
-            OsrsScanData response = null;
-            var osrsWindow = HwndInterface.GetHwndFromTitle("Old School RuneScape");
-            var windowSize = HwndInterface.GetHwndSize(osrsWindow);
-            var windowLocation = HwndInterface.GetHwndPos(osrsWindow);
-
-            HwndInterface.ActivateWindow(osrsWindow);
-
-            var screenshot = TakeScreenshot();
-
-            #region Scan Boundaries Calculation
-            if (boundaries == null)
-            {
-                boundaries = new ScanBoundaries();
-
-                boundaries.MinX = windowLocation.X < 0 ? 0 : windowLocation.X;
-                boundaries.MinY = windowLocation.Y < 0 ? 0 : windowLocation.Y;
-                boundaries.MaxX = (windowLocation.X + windowSize.Width) > screenshot.Width ? screenshot.Width - osrsImage.ImageBitmap.Width : (windowLocation.X + windowSize.Width) - osrsImage.ImageBitmap.Width;
-                boundaries.MaxY = (windowLocation.Y + windowSize.Height) > screenshot.Height ? screenshot.Height - osrsImage.ImageBitmap.Height : (windowLocation.Y + windowSize.Height) - osrsImage.ImageBitmap.Height;
-            }
-            #endregion
-
-            response = FindBitmapsInImage(osrsImage, screenshot, boundaries, getSingleOccurrence);
-
-            return response;
-        }
-
+        
         public List<OsrsScanData> SearchScreenForImages(List<OsrsImage> osrsImages, ScanBoundaries boundaries = null, bool getSingleOccurrence = false)
         {
             var response = new List<OsrsScanData>();
@@ -193,49 +165,7 @@ namespace OsrsColorBot
 
             return screenshot;
         }
-
-        // this should be able to scan for a list of OsrsImages to find multiple items on one scan
-        private OsrsScanData FindBitmapsInImage(OsrsImage needle, Bitmap haystack, ScanBoundaries boundaries, bool getSingleOccurrence)
-        {
-            var result = new OsrsScanData() { ImageData = needle };
-
-            // The X and Y of the outer loops represent the coordinates on the Screenshot object
-            for (int outerX = boundaries.MinX; outerX < boundaries.MaxX; outerX++)
-            {
-                for (int outerY = boundaries.MinY; outerY < boundaries.MaxY; outerY++)
-                {
-                    // The X and Y on the inner loops represent the coordinates on the bitmap that we are trying to find in the Screenshot
-                    for (int innerX = 0; innerX < needle.ImageBitmap.Width; innerX++)
-                    {
-                        for (int innerY = 0; innerY < needle.ImageBitmap.Height; innerY++)
-                        {
-                            Color cNeedle = needle.ImageBitmap.GetPixel(innerX, innerY);
-                            Color cHaystack = haystack.GetPixel(innerX + outerX, innerY + outerY);
-
-                            // We compare the color of the pixel in the Screenshot with the pixel in the bitmap we are searching for
-                            if (cNeedle.R != cHaystack.R || cNeedle.G != cHaystack.G || cNeedle.B != cHaystack.B)
-                            {
-                                // Stop examining the current bitmap once a single pixel doesn't match
-                                goto notFound;
-                            }
-                        }
-                    }
-
-                    result.MatchLocations.Add(new Point(outerX, outerY));
-
-                    if (getSingleOccurrence)
-                    {
-                        return result;
-                    }
-
-                    notFound:
-                    continue;
-                }
-            }
-
-            return result;
-        }
-
+        
         // this should be able to scan for a list of OsrsImages to find multiple items on one scan
         private List<OsrsScanData> FindAllBitmapsInImage(List<OsrsImage> needles, Bitmap haystack, ScanBoundaries boundaries, bool getSingleOccurrence)
         {
