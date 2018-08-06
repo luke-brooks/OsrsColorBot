@@ -20,12 +20,17 @@ namespace OsrsColorBot
             var rocks = engine.AllImages.Where(x => x.ImageName.Contains("iron rocks")).ToList();
             var ironOre = engine.AllImages.Where(x => x.ImageName == "iron ore.bmp").ToList();
 
-            engine.DropAllItems(ironOre);
-
-            for (int i = 0; i < 10; i++)
+            for (int j = 0; j < 20; j++)
             {
-                IoSimulator.PauseThread(2300);
-                engine.ClickOnGameField(rocks); 
+                engine.DropAllItems(ironOre);
+
+                for (int i = 0; i < 20; i++)
+                {
+                    IoSimulator.PauseThread(2300);
+                    engine.ClickOnGameField(rocks);
+                }
+
+                IoSimulator.PauseThread(2000);
             }
 
             #endregion
@@ -51,39 +56,7 @@ namespace OsrsColorBot
 
             //engine.DropAllItems(itemsToDrop, drop);
             #endregion
-
-            //#region Power Mining items
-            //var ironOre = imgs.Where(x => x.ImageName == "iron ore.bmp").FirstOrDefault();
-            //var drop = imgs.Where(x => x.ImageName == "drop.bmp").FirstOrDefault();
-            //var ironRocks1 = imgs.Where(x => x.ImageName == "iron rocks 1.bmp").FirstOrDefault();
-            //var ironRocks2 = imgs.Where(x => x.ImageName == "iron rocks 2.bmp").FirstOrDefault();
-            //var packContents = imgs.Where(x => x.ImageName == "view pack contents.bmp").FirstOrDefault();
-            //#endregion
-
-            //var gemRocks = imgs.Where(x => x.ImageName.Contains("gem rocks")).ToList();
-
-            //var gemRocksColors = gemRocks.SelectMany(x => imageProcessor.SaveColorData(x)).ToList();
-
-            //var packContentsLocation = imageProcessor.SearchScreenForImage(packContents, getSingleOccurrence: true).MatchLocations.FirstOrDefault();
-            //#region Color detect attempt
-            ////var blah = imageProcessor.SearchScreenForColors(gemRocksColors, gemRocks.FirstOrDefault());
-
-            ////if (blah.MatchLocations.Any())
-            ////{
-            ////    int myNum = blah.MatchLocations.Count % 2;
-            ////    IoSimulator.ClickLocation(blah.MatchLocations.ToArray()[myNum], false);
-            ////    //IoSimulator.PauseThread(1300);
-            ////    //IoSimulator.ClickLocation(blah.MatchLocations.First());
-
-            ////}
-            //#endregion
-
-
-            //DropAllItems(imageProcessor, itemsToDrop, drop, packContentsLocation);
-
-            // DropAllOfItemFromInventory(imageProcessor, opal, drop, packContentsLocation);
-
-
+            
         }
     }
 }
